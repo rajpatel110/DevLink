@@ -1,18 +1,54 @@
 const express = require('express');
 const connectDB =require("./config/database");
-
 const app = express();
 const User=require("./models/user");
+const {validateSignUpData}= require("./utils/validation");
+const bcrypt=require("bcrypt");
 
 app.use(express.json());
 
 app.post("/signup",async(req,res)=>{
-    const user=new User(req.body);
+    //validation
     try{
+    validateSignUpData(req);
+
+    const{firstName,lastName,emailId,password}=req.body;
+
+    //encrypt psw
+    const passwordHash=await bcrypt.hash(password,10)
+
+    const user=new User({
+        firstName,
+        lastName,
+        emailId,
+        password: passwordHash,
+    }
+    );
+    
         await user.save();
         res.send("User added successfuly");
     }catch(err){
-        res.status(400).send("error saving the user"+err.message);
+        res.status(400).send("error saving the user. "+err.message);
+    }
+});
+
+app.post("/login",async(req,res)=>{
+    try{
+        const{emailId,password}=req.body;
+        const user= await User.findOne({emailId:emailId});
+        if(!user){
+            throw new Error("Invalid credentials..")
+        }
+        const isPasswordValid=await bcrypt.compare(password,user.password);
+        if(isPasswordValid){
+            res.send("Login successfull !!");
+        }
+        else{
+            throw new Error("Invalid credentials..");
+        }
+
+    }catch(err){
+        res.status(400).send("Error: "+err.message);
     }
 });
 
@@ -57,28 +93,37 @@ app.delete("/user",async(req,res)=>{
 })
 
 //update data of a user
-app.patch("/user",async(req,res)=>{
-    const userId=req.body.userId;
+app.patch("/user/:userId",async(req,res)=>{
+    const userId=req.params.userId;
     const data=req.body;
+
+    
+
     try{
-        await User.findByIdAndUpdate(userId,data);
+        const ALLOWED_UPDATES=["photoUrl","about","age","gender","skills"]
+
+        const isUpdateAllowed =Object.keys(data).every((k)=>
+        ALLOWED_UPDATES.includes(k)
+        );
+        if(!isUpdateAllowed){
+            throw new Error("update not allowed..");
+        }
+
+        await User.findByIdAndUpdate(userId,data,{runValidators:true,new:true});
         res.send("User updated successfuly");
     }
     catch(err){
-        res.status(400).send("something went wrong");
+        res.status(400).send("UPDATE FAILED:"+ err.message);
     }
 })
 
 connectDB()
 .then(()=>{
-    console.log("Database connection successfully..");
+    console.log("Database connection successfull..");
     app.listen(3000,()=>{
     console.log("Server is running on port 3000");
 });
 }).catch(err=>{
     console.log("Database cannot be connected..");
+    console.log(err);
 })
-
-
-
-
