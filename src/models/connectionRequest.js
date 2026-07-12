@@ -19,6 +19,18 @@ const connectionRequestSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-const ConnectionRequestModel = new mongoose.model("ConnectionRequesModel",connectionRequestSchema);
+//compound indexing 
+connectionRequestSchema.index({fromUserId: 1 , toUserId: 1});
+
+connectionRequestSchema.pre("save",function(){
+    const connectionRequest = this;
+    //check if from userid same as to userid
+    if(connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
+        throw new Error("Cannot send connection req to yourself! ");
+    }
+    next();
+})
+
+const ConnectionRequest = new mongoose.model("ConnectionRequest",connectionRequestSchema);
 
 module.exports=ConnectionRequest;
