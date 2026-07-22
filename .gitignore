@@ -1,1 +1,11 @@
+# Backend
 node_modules/
+
+# Frontend
+DevLink-web/node_modules/
+
+# Environment variables
+.env
+
+# Build folders
+dist
