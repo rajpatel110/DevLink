@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         minLength:8,
+        select:false,
     },
     age: {
         type:Number,
@@ -46,6 +47,14 @@ const userSchema = new mongoose.Schema({
     },
     Skills:{
         type:[String],
+    },
+    resetPasswordToken: {
+        type: String,
+        select: false,
+    },
+    resetPasswordExpires: {
+        type: Date,
+        select: false,
     }
 },{timestamps:true,});
 
@@ -55,7 +64,7 @@ userSchema.index({firstName: 1, lastName: 1});
 userSchema.methods.getJWT = async function(){
     const user=this;
 
-    const token = await jwt.sign({_id:user._id},"DEV@Link$79",{expiresIn:"7d"});
+    const token = await jwt.sign({_id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"});
     return token;
 };
 
