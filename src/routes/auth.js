@@ -47,7 +47,7 @@ authRouter.post("/login",async(req,res)=>{
 
             const token=await user.getJWT();
 
-            res.cookie("token",token,{expires:new Date(Date.now()+7*24*60*60*1000)});
+            res.cookie("token",token,{httpOnly:true,secure:process.env.NODE_ENV === "production",sameSite:"lax",path:"/",expires:new Date(Date.now()+7*24*60*60*1000)});
 
             const userObj = user.toObject();
             delete userObj.password;
@@ -64,13 +64,16 @@ authRouter.post("/login",async(req,res)=>{
 });
 
 authRouter.post("/logout",async(req,res)=>{
-    res.cookie("token",null,{expires: new Date(Date.now()),});
+    res.clearCookie("token",{httpOnly:true,secure:process.env.NODE_ENV === "production",sameSite:"lax",path:"/"});
     res.send("Logout successfull !");
 })
 
 
 authRouter.post("/forgotPassword", async (req, res) => {
     try {
+        if (process.env.NODE_ENV === "production") {
+            return res.status(503).json({ message: "Password reset email is not configured yet." });
+        }
         const { emailId } = req.body;
         const user = await User.findOne({ emailId });
 

@@ -7,24 +7,30 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
 }
 ));
 app.use(express.json());
 app.use(cookieParser());
+app.use(async (req, res, next) => {
+    try { await connectDB(); next(); }
+    catch { res.status(503).json({ message: "Database unavailable. Please try again." }); }
+});
 
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const chatRouter = require("./routes/chat");
 
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
-connectDB()
+app.use("/chat", chatRouter);
+if (require.main === module) connectDB()
     .then(() => {
         console.log("Database connection successfull..");
         app.listen(process.env.PORT || 3000, () => {
@@ -34,3 +40,5 @@ connectDB()
         console.log("Database cannot be connected..");
         console.log(err);
     })
+
+module.exports = app;

@@ -44,7 +44,7 @@ const Body = () => {
 
         } catch (error) {
 
-            if (error.response?.status === 401) {
+            if (error.response?.status === 401 && !["/login", "/signup", "/forgot-password"].includes(window.location.pathname) && !window.location.pathname.startsWith("/reset-password/")) {
 
                 navigate("/login");
 

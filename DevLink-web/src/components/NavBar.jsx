@@ -169,6 +169,7 @@ const NavBar = () => {
                                 </li>
 
 
+                                <li><Link to="/chat">Messages</Link></li>
                                 {/* Connection Requests */}
                                 <li>
 

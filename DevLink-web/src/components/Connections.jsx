@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { BASE_URL } from "../utils/constants";
@@ -121,6 +122,7 @@ const Connections = () => {
 
                         <div className="card-body">
 
+                            <Link to={`/chat/${user._id}`} className="btn btn-primary">Chat</Link>
                             {/* Name */}
                             <h2 className="card-title">
 

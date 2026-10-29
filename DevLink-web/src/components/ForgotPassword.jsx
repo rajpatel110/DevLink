@@ -69,6 +69,7 @@ const ForgotPassword = () => {
                                 Reset link (email sending isn't set up yet, so it's shown here directly):
                                 <br />
                                 
+                                <a
                                     href={resetUrl}
                                     className="link link-primary"
                                 >

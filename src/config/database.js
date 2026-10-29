@@ -1,7 +1,10 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
+let connectionPromise;
 const connectDB = async () => {
-    await mongoose.connect(process.env.DB_CONNECTION_SECRET);
-}
-
+    if (!connectionPromise) {
+        connectionPromise = mongoose.connect(process.env.DB_CONNECTION_SECRET)
+            .catch((error) => { connectionPromise = undefined; throw error; });
+    }
+    return connectionPromise;
+};
 module.exports = connectDB;
