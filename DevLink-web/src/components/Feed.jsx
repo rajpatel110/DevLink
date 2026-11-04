@@ -46,7 +46,7 @@ const Feed = () => {
     // Error
     if (error) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="flex justify-center items-center min-h-[70dvh] px-4 py-6">
                 <h2 className="text-2xl font-bold text-red-500">
                     Error loading feed
                 </h2>
@@ -57,7 +57,7 @@ const Feed = () => {
     // Loading
     if (!feed) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="flex justify-center items-center min-h-[70dvh] px-4 py-6">
                 <span className="loading loading-spinner loading-lg"></span>
             </div>
         );
@@ -66,7 +66,7 @@ const Feed = () => {
     // No more users
     if (feed.length === 0 || currentIndex >= feed.length) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="flex justify-center items-center min-h-[70dvh] px-4 py-6">
                 <h2 className="text-2xl font-bold">
                     No more users available.
                 </h2>
@@ -82,9 +82,9 @@ const Feed = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen">
+        <div className="flex justify-center items-center min-h-[70dvh] px-4 py-6">
 
-            <div className="flex items-center gap-5">
+            <div className="flex w-full min-w-0 flex-col items-center gap-5 sm:w-auto sm:flex-row">
 
                 {/* Current User Card */}
                 <UserCard
@@ -98,7 +98,7 @@ const Feed = () => {
                 {currentIndex < feed.length - 1 && (
                     <button
                         onClick={handleNext}
-                        className="btn btn-circle btn-lg"
+                        aria-label="Next developer" className="btn btn-circle btn-lg shrink-0"
                     >
                         →
                     </button>

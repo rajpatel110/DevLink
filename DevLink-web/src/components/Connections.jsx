@@ -58,7 +58,7 @@ const Connections = () => {
 
         return (
 
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="flex justify-center items-center min-h-[70dvh] px-4 py-6">
 
                 <span className="loading loading-spinner loading-lg"></span>
 
@@ -73,7 +73,7 @@ const Connections = () => {
 
         return (
 
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="flex justify-center items-center min-h-[70dvh] px-4 py-6">
 
                 <h2 className="text-2xl font-bold">
 
@@ -90,7 +90,7 @@ const Connections = () => {
 
     return (
 
-        <div className="min-h-screen p-10">
+        <div className="min-h-[70dvh] px-4 py-6 sm:p-10">
 
             <h1 className="text-3xl font-bold text-center mb-8">
 
@@ -105,7 +105,7 @@ const Connections = () => {
 
                     <div
                         key={user._id}
-                        className="card w-80 bg-base-300 shadow-xl"
+                        className="card w-full max-w-sm min-w-0 bg-base-300 shadow-xl"
                     >
 
                         {/* Photo */}
@@ -120,7 +120,7 @@ const Connections = () => {
                         </figure>
 
 
-                        <div className="card-body">
+                        <div className="card-body min-w-0 p-5 sm:p-8">
 
                             <Link to={`/chat/${user._id}`} className="btn btn-primary">Chat</Link>
                             {/* Name */}

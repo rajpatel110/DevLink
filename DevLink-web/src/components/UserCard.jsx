@@ -75,18 +75,18 @@ const UserCard = ({ user, onIgnore, onInterested }) => {
     };
 
     return (
-        <div className="card w-96 bg-base-300 shadow-2xl">
+        <div className="card w-full max-w-sm min-w-0 bg-base-300 shadow-2xl">
 
             {/* Profile Image */}
             <figure>
                 <img
                     src={user.photoUrl}
                     alt="User profile"
-                    className="w-full h-80 object-cover"
+                    className="w-full h-64 sm:h-80 object-cover"
                 />
             </figure>
 
-            <div className="card-body">
+            <div className="card-body min-w-0 p-5 sm:p-8">
 
                 {/* Name + Age */}
                 <h2 className="card-title text-2xl">

@@ -87,41 +87,42 @@ const Chat = ({ userId }) => {
 
     const recipient = connections.find((connection) => connection._id === userId);
     return (
-        <main className="max-w-5xl mx-auto p-4 min-h-screen">
-            <h1 className="text-3xl font-bold my-6">Messages</h1>
-            <div className="grid md:grid-cols-[240px_1fr] gap-4">
-                <aside className="bg-base-200 rounded-box p-4">
+        <main className="w-full max-w-5xl mx-auto px-3 py-4 sm:p-6">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-4">Messages</h1>
+            <div className="grid min-w-0 md:grid-cols-[240px_minmax(0,1fr)] gap-4">
+                <aside className={`${userId ? "hidden md:block" : "block"} bg-base-200 rounded-box p-4 min-w-0 md:max-h-[70dvh] overflow-y-auto`}>
                     <h2 className="font-semibold mb-3">Your connections</h2>
                     {connections.map((connection) => (
                         <Link key={connection._id} to={`/chat/${connection._id}`}
-                            className={`btn w-full mb-2 justify-start ${userId === connection._id ? "btn-primary" : "btn-ghost"}`}>
+                            className={`btn h-auto min-h-12 whitespace-normal break-words w-full mb-2 justify-start ${userId === connection._id ? "btn-primary" : "btn-ghost"}`}>
                             {connection.firstName} {connection.lastName}
                         </Link>
                     ))}
                     {!loading && !connections.length && <p>No connections yet. Accept a connection to start chatting.</p>}
                     <Link className="link block mt-4" to="/connections">View connections</Link>
                 </aside>
-                <section className="bg-base-200 rounded-box p-4 min-w-0">
-                    <h2 className="font-semibold border-b border-base-300 pb-3">
+                <section className={`${userId ? "flex" : "hidden md:flex"} flex-col bg-base-200 rounded-box p-3 sm:p-4 min-w-0 h-[calc(100dvh-10rem)] min-h-[20rem] md:h-[70dvh]`}>
+                    <Link to="/chat" className="btn btn-ghost self-start mb-2 md:hidden">← All conversations</Link>
+                    <h2 className="font-semibold break-words shrink-0 border-b border-base-300 pb-3">
                         {recipient ? `${recipient.firstName} ${recipient.lastName || ""}` : "Choose a connection"}
                     </h2>
                     {error && <p role="alert" className="text-error my-3">{error}</p>}
-                    <div className="h-[50vh] overflow-y-auto py-4" role="log" aria-label="Chat messages">
+                    <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain py-4" role="log" aria-label="Chat messages">
                         {loading && <p>Loading...</p>}
                         {hasMore && <button className="btn btn-sm block mx-auto" disabled={loadingOlder} onClick={loadOlder}>{loadingOlder ? "Loading..." : "Load older messages"}</button>}
                         {!loading && userId && !messages.length && !error && <p>Say hello to start your conversation.</p>}
                         {messages.map((message) => (
                             <div key={message._id} className={`chat ${String(message.senderId) === String(currentUser?._id) ? "chat-end" : "chat-start"}`}>
-                                <div className="chat-bubble whitespace-pre-wrap break-words max-w-[85%]">{message.text}</div>
+                                <div className="chat-bubble whitespace-pre-wrap [overflow-wrap:anywhere] min-w-0 max-w-[85%]">{message.text}</div>
                                 <time className="chat-footer opacity-60 text-xs">{new Date(message.createdAt).toLocaleString()}</time>
                             </div>
                         ))}
                         <div ref={bottom} />
                     </div>
-                    {userId && <form onSubmit={send} className="flex gap-2 pt-3 border-t border-base-300">
+                    {userId && <form onSubmit={send} className="flex shrink-0 items-end gap-2 pt-3 border-t border-base-300">
                         <textarea aria-label="Message" placeholder="Write a message..." maxLength={2000} rows={2}
-                            className="textarea textarea-bordered flex-1 min-w-0" value={text} disabled={sending} onChange={(event) => setText(event.target.value)} />
-                        <button className="btn btn-primary" disabled={sending || loading || !text.trim()}>{sending ? "Sending..." : "Send"}</button>
+                            className="textarea textarea-bordered text-base flex-1 min-w-0 resize-none" value={text} disabled={sending} onChange={(event) => setText(event.target.value)} />
+                        <button className="btn btn-primary shrink-0" disabled={sending || loading || !text.trim()}>{sending ? "Sending..." : "Send"}</button>
                     </form>}
                 </section>
             </div>

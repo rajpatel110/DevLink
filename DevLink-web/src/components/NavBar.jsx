@@ -89,10 +89,10 @@ const NavBar = () => {
 
     return (
 
-        <div className="navbar bg-base-300 shadow-sm">
+        <div className="navbar min-w-0 gap-2 bg-base-300 px-3 sm:px-6 shadow-sm">
 
             {/* Logo */}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
 
                 <Link
                     to="/Feed"
@@ -112,7 +112,7 @@ const NavBar = () => {
                     <>
 
                         {/* Welcome */}
-                        <p className="font-medium">
+                        <p className="hidden sm:block max-w-[12rem] truncate font-medium">
 
                             Welcome, {user.firstName}
 
@@ -120,11 +120,11 @@ const NavBar = () => {
 
 
                         {/* Profile dropdown */}
-                        <div className="dropdown dropdown-end mx-5">
+                        <div className="dropdown dropdown-end shrink-0 sm:ml-3">
 
                             <div
                                 tabIndex={0}
-                                role="button"
+                                role="button" aria-label="Open account menu"
                                 className="btn btn-ghost btn-circle avatar"
                             >
 
@@ -142,7 +142,7 @@ const NavBar = () => {
 
                             <ul
                                 tabIndex="-1"
-                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-60 p-2 shadow"
+                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-60 max-w-[calc(100vw-1.5rem)] p-2 shadow"
                             >
 
                                 {/* Profile */}

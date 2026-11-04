@@ -71,11 +71,11 @@ const Body = () => {
 
     return (
 
-        <div>
+        <div className="flex min-h-dvh min-w-0 flex-col">
 
             <NavBar />
 
-            <Outlet />
+            <div className="flex-1 min-w-0"><Outlet /></div>
 
             <Footer />
 

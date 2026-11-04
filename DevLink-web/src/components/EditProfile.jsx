@@ -71,11 +71,11 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="flex justify-center my-10">
+        <div className="flex justify-center px-4 my-6 sm:my-10">
 
-            <div className="card w-96 bg-base-300 shadow-2xl">
+            <div className="card w-full max-w-sm min-w-0 bg-base-300 shadow-2xl">
 
-                <div className="card-body">
+                <div className="card-body min-w-0 p-5 sm:p-8">
 
                     <h2 className="text-2xl font-bold text-center mb-5">
                         Edit Profile
